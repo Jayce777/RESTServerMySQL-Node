@@ -1,22 +1,29 @@
-const {Usuario,Categoria,Role, Producto}=require('../models');
 
-const RoleExiste= async(rol='')=>{
+const { DBConnectionMySQL } = require('../database/config.db');
 
-    const existerol= await Role.findOne({rol});
-  //  console.log(rol);
-    if( !existerol){
+const tables=['rol','usuario'];
+const estadotrue=true;
+
+const RoleExiste= async(rol=0)=>{
+    const db = await DBConnectionMySQL();
+    const existerol=await db.query(`SELECT * from ${tables[0]} where estado=${estadotrue} and id=?`,[rol]);
+   
+    
+    if( existerol.length===0){
+       
         throw new Error(`El rol ${rol} no existe`)
     }
+  
 };
 
 
 const ExisteEmail=async (correo='')=>{
-
-    const existemail= await Usuario.findOne({correo});
-   // console.log(existemail);    
-    if(existemail){
+    const db = await DBConnectionMySQL();
+    const existemail=await db.query(`SELECT * from ${tables[1]} where correo=?`,[correo]);
+    console.log(existemail);    
+    if(existemail.length!==0){
         // retona un status de error
-        throw new Error(`El correo ${correo} ya ha sido registrado`)
+        throw new Error(`El usuario con correo ${correo} ya ha sido registrado`)
 
     }
 };
@@ -73,9 +80,5 @@ const ExisteCategoriaProductoXId=async (categoria='')=>{
 
 module.exports={
     RoleExiste,
-    ExisteEmail,
-    ExisteUsuarioXId,
-    ExisteCategoriaXId,
-    ExisteCategoriaProductoXId,
-    ExisteProductoXId
+    ExisteEmail
 }

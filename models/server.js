@@ -10,6 +10,7 @@ const{DBConnectionMySQL}=require('../database/config.db');
 
 //rutas
 const routeroles=require('../routes/roles.routes');
+const routeusuarios=require('../routes/usuarios.routes');
 
 class Server{
 
@@ -19,7 +20,8 @@ class Server{
 
         this.paths={
 
-            roles:'/api/roles'
+            roles:'/api/roles',
+            usuarios:'/api/usuarios'
         }
         
 
@@ -51,7 +53,9 @@ class Server{
     routes(){
 
        this.app.use(this.paths.roles,routeroles);
-          
+       this.app.use(this.paths.usuarios,routeusuarios);
+
+       
     }
 
     listen(){
