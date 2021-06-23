@@ -25,6 +25,7 @@ const UsuariosGet=async(req=request, res=response)=> {
         });
        
         res.json({
+            total:usuarios.length,
             usuarios
         });
 
